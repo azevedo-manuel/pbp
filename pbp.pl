@@ -201,7 +201,7 @@ sub readCLIArguments{
 	    if ($configData{$confKey}){
 		debugMsg("Final config: %-15s = %s ",$confKey,$configData{$confKey});
 	    } else {
-		debugMsg("Final config: %-15s = ** Undefined in config file **",$confKey);
+		debugMsg("Final config: %-15s = ** Undefined **",$confKey);
 	    }
 	}
     }
@@ -362,7 +362,8 @@ sub getUserPhoneList {
 #
 # function getPhoneStatus
 #
-# This function checks the status of the phones existing in the %devices hash
+# This function checks and sets the status of the phones existing in the global %devices hash
+# It returns the total number of registered phones found
 sub getPhoneStatus{
 
     # Usually CUCM is implemented with self-signed certificates and AXL
@@ -409,6 +410,9 @@ sub getPhoneStatus{
     debugMsg("Get phone status: Created %i chunk(s), each with a maximum of %i phones",$numberChunks,$configData{rischunksize});
     
     my $i=1;
+    
+    # Total number of registered phones found
+    my $registered;
   
     # For each chunk, create a request
     for my $deviceList (@chunks){
@@ -440,17 +444,17 @@ sub getPhoneStatus{
 		$devices{$_->{Name}}{model}         = $_->{Model};
 		$devices{$_->{Name}}{status}        = $_->{Status};
 		$devices{$_->{Name}}{description}   = $_->{Description};
-		
 	    }
+	    debugMsg("Get phone status: %i phone(s) are registered in chunk %i",scalar(@resNode),$i);
+	    $registered +=scalar(@resNode);
 	} else {
 	    printf "CUCM error: %s - %s\n",$res->faultcode,$res->faultstring;
 	    exit 1;
 	}
-	
-
+	$i++;
     }
     
-    
+    return $registered;
 }
 
 
@@ -469,7 +473,7 @@ validateConfig();
 
 debugMsg('Main: Querying the AXL database for phones associated with %s',$configData{bkgusername});
 getUserPhoneList();
-my $totalConfiguredPhones = scalar(%devices);
+my $totalConfiguredPhones = scalar(keys %devices);
 
 if ($totalConfiguredPhones) {
     statusMsg("Found %i devices associated to user '%s'.",$totalConfiguredPhones,$configData{bkgusername});
@@ -479,10 +483,17 @@ if ($totalConfiguredPhones) {
     exit 1;
 }
 
+my $totalRegistered=getPhoneStatus();
 
-getPhoneStatus();
+if ($totalRegistered) {
+    #take care of pushing the background to the phones
+} else {
+    debugMsg("Main: Total number of registered phones returned is %i",$totalRegistered);
+    statusMsg("There seem to be no phones registered");
+    exit 0
+}
 
-print Dumper(\%devices);
+#print Dumper(\%devices);
 
 debugMsg("Main: Finished executing");
 
