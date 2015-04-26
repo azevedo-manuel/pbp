@@ -1,0 +1,189 @@
+enum  name                                               tkclass moniker                                       showindevicedefaults defaultdtmfcapability tkrisclass tksubclass tkphonecategory
+===== ================================================== ======= ============================================= ==================== ===================== ========== ========== ===============
+15    EMCC Base Phone                                    249     MODEL_EMCC                                    f                    10                    1          1          0
+20    SCCP Phone                                         1       MODEL_SCCP_PHONE                              f                    10                    1          1          0
+30    Analog Access                                      2       MODEL_VEGA                                    t                    10                    2          4          0
+40    Digital Access                                     2       MODEL_TITAN1                                  t                    10                    2          4          0
+42    Digital Access+                                    2       MODEL_TITAN2                                  f                    10                    2          6          0
+43    Digital Access WS-X6608                            2       MODEL_LENNON                                  t                    10                    2          6          0
+47    Analog Access WS-X6624                             2       MODEL_ELVIS                                   t                    10                    2          5          0
+50    Conference Bridge                                  4       MODEL_CONF_BRIDGE                             t                    10                    6          8          0
+51    Conference Bridge WS-X6608                         4       MODEL_YOKO_CONF_BRIDGE                        t                    10                    6          9          0
+62    H.323 Gateway                                      2       MODEL_H323_GATEWAY                            f                    10                    3          7          0
+70    Music On Hold                                      12      MODEL_MUSIC_ON_HOLD                           f                    10                    6          14         0
+71    Device Pilot                                       14      MODEL_DEVICE_PILOT                            f                    0                     0          15         0
+73    CTI Route Point                                    10      MODEL_CTI_ROUTE_POINT                         f                    0                     4          16         0
+80    Voice Mail Port                                    8       MODEL_UONE                                    f                    10                    5          17         0
+90    Route List                                         7       MODEL_ROUTE_LIST                              f                    0                     7          18         0
+100   Load Simulator                                     13      MODEL_LOAD_SIMULATOR                          t                    0                     0          19         0
+110   Media Termination Point                            5       MODEL_MTP                                     t                    0                     6          20         0
+111   Media Termination Point Hardware                   5       MODEL_YOKO_MTP                                t                    0                     6          21         0
+120   MGCP Station                                       2       MODEL_MGCP_STATION                            t                    10                    2          5          0
+121   MGCP Trunk                                         2       MODEL_MGCP_TRUNK                              t                    10                    2          6          0
+122   GateKeeper                                         15      MODEL_GATEKEEPER                              f                    0                     3          25         0
+125   Trunk                                              18      MODEL_TRUNK                                   f                    10                    3          26         0
+126   Tone Announcement Player                           19      MODEL_ANN                                     f                    0                     6          28         0
+254   Unknown MGCP Gateway                               2       MODEL_UNKNOWN_MGCP_GATEWAY                    f                    0                     2          4          0
+255   Unknown                                            255     MODEL_UNKNOWN                                 f                    0                     0          29         0
+52    Cisco IOS Conference Bridge (HDV2)                 4       MODEL_DIXIELAND_CFB                           t                    10                    6          10         0
+53    Cisco Conference Bridge (WS-SVC-CMM)               4       MODEL_SUMMIT_CFB                              t                    10                    6          11         0
+83    Cisco IOS Software Media Termination Point (HDV2)  5       MODEL_DIXIELAND_SW_MTP                        t                    0                     6          22         0
+84    Cisco Media Server (WS-SVC-CMM-MS)                 4       MODEL_SUMMIT_APP_CFB                          t                    0                     6          12         0
+112   Cisco IOS Media Termination Point (HDV2)           5       MODEL_DIXIELAND_MTP                           t                    0                     6          23         0
+113   Cisco Media Termination Point (WS-SVC-CMM)         5       MODEL_SUMMIT_MTP                              t                    0                     6          24         0
+131   SIP Trunk                                          18      MODEL_SIP_TRUNK                               f                    10                    8          27         0
+132   SIP Gateway                                        2       MODEL_SIP_GATEWAY                             f                    10                    8          4          0
+133   WSM Trunk                                          18      MODEL_WSM_TRUNK                               f                    10                    8          27         0
+85    Cisco Video Conference Bridge (IPVC-35xx)          4       MODEL_FLINT_CONF_BRIDGE                       t                    10                    6          13         0
+522   BlackBerry MVS VoWifi                              1       MODEL_BLACKBERRY_MVS_VOWIFI                   f                    10                    1          1          0
+640   Usage Profile                                      255     MODEL_USAGE_PROFILE                           f                    10                    0          29         0
+598   Ascom IP-DECT Device                               1       MODEL_ASCOM_IP_DECT_DEVICE                    f                    10                    1          1          0
+599   Cisco TelePresence Exchange System                 4       MODEL_CISCO_TELEPRESENCE_EXCHANGE_SYSTEM      f                    10                    6          33         0
+36041 Cisco TelePresence Conductor                       4       MODEL_CISCO_TELEPRESENCE_CONDUCTOR            f                    10                    6          33         0
+61    H.323 Phone                                        1       MODEL_H323_PHONE                              t                    10                    3          3          0
+72    CTI Port                                           1       MODEL_CTI_PORT                                f                    10                    4          2          0
+134   Remote Destination Profile                         20      MODEL_REMOTE_DESTINATION                      f                    10                    0          1          2
+30027 Analog Phone                                       1       MODEL_ANALOG_PHONE                            t                    10                    2          1          0
+30028 ISDN BRI Phone                                     1       MODEL_ISDN_BRI_PHONE                          t                    10                    2          1          0
+2     Cisco 12 SP+                                       1       MODEL_12SPP                                   t                    10                    1          1          0
+3     Cisco 12 SP                                        1       MODEL_12SP                                    t                    10                    1          1          0
+4     Cisco 12 S                                         1       MODEL_12S                                     t                    10                    1          1          0
+1     Cisco 30 SP+                                       1       MODEL_30SPP                                   t                    10                    1          1          0
+5     Cisco 30 VIP                                       1       MODEL_30VIP                                   t                    10                    1          1          0
+9     Cisco 7935                                         1       MODEL_IP_CONFERENCE_PHONE                     t                    10                    1          1          0
+6     Cisco 7910                                         1       MODEL_TELECASTER_BID                          t                    10                    1          1          0
+7     Cisco 7960                                         1       MODEL_TELECASTER_MGR                          t                    10                    1          1          0
+8     Cisco 7940                                         1       MODEL_TELECASTER_BUSINESS                     t                    10                    1          1          0
+10    Cisco VGC Phone                                    1       MODEL_VGC_PHONE                               t                    10                    2          1          0
+11    Cisco VGC Virtual Phone                            1       MODEL_VGC_BOX_PHONE                           t                    10                    2          1          0
+48    VGC Gateway                                        2       MODEL_CHALICE                                 f                    0                     2          4          0
+12    Cisco ATA 186                                      1       MODEL_ATA_186                                 t                    10                    2          1          0
+124   7914 14-Button Line Expansion Module               16      MODEL_14_BUTTON_SIDECAR                       t                    0                     0          1          0
+336   Third-party SIP Device (Basic)                     1       MODEL_THIRD_PARTY_SIP_DEVICE_BASIC            f                    10                    1          1          0
+374   Third-party SIP Device (Advanced)                  1       MODEL_THIRD_PARTY_SIP_DEVICE_ADVANCED         f                    10                    1          1          0
+115   Cisco 7941                                         1       MODEL_CISCO_7941                              t                    10                    1          1          0
+119   Cisco 7971                                         1       MODEL_CISCO_7971                              t                    10                    1          1          0
+20000 Cisco 7905                                         1       MODEL_CISCO_IP_PHONE_7905                     t                    10                    1          1          0
+302   Cisco 7985                                         1       MODEL_CISCO_7989                              t                    10                    1          1          0
+307   Cisco 7911                                         1       MODEL_CISCO_7911                              t                    10                    1          1          0
+308   Cisco 7961G-GE                                     1       MODEL_CISCO_7961G_GE                          t                    10                    1          1          0
+309   Cisco 7941G-GE                                     1       MODEL_CISCO_7941G_GE                          t                    10                    1          1          0
+335   Motorola CN622                                     1       MODEL_MOTOROLA_CN622                          t                    10                    1          1          0
+348   Cisco 7931                                         1       MODEL_7931                                    t                    10                    1          1          0
+358   Cisco Unified Personal Communicator                1       MODEL_CISCO_UNIFIED_COMMUNICATOR              t                    10                    1          1          1
+365   Cisco 7921                                         1       MODEL_CP7921                                  t                    10                    1          1          0
+369   Cisco 7906                                         1       MODEL_CISCO_7906                              t                    10                    1          1          0
+375   Cisco TelePresence                                 1       MODEL_TEN_BEARS                               f                    10                    1          1          0
+376   Nokia S60                                          1       MODEL_NOKIA_E_SERIES                          f                    10                    1          1          1
+30002 Cisco 7920                                         1       MODEL_7920                                    t                    10                    1          1          0
+30006 Cisco 7970                                         1       MODEL_CISCO_7970                              t                    10                    1          1          0
+30007 Cisco 7912                                         1       MODEL_CISCO_7912                              t                    10                    1          1          0
+30008 Cisco 7902                                         1       MODEL_CISCO_7902                              t                    10                    1          1          0
+30016 Cisco IP Communicator                              1       MODEL_CISCO_SOFTPHONE_SE_M                    t                    10                    1          1          1
+30018 Cisco 7961                                         1       MODEL_CISCO_7961                              t                    10                    1          1          0
+30019 Cisco 7936                                         1       MODEL_CISCO_7936                              t                    10                    1          1          0
+30032 SCCP gateway virtual phone                         17      MODEL_SCCP_GATEWAY_VIRTUAL_PHONE              t                    10                    2          1          0
+30035 IP-STE                                             1       MODEL_IP_STE                                  t                    10                    1          1          0
+404   Cisco 7962                                         1       MODEL_CISCO_7962                              t                    10                    1          1          0
+412   Cisco 3951                                         1       MODEL_CISCO_3951                              t                    10                    1          1          0
+431   Cisco 7937                                         1       MODEL_CISCO_7937                              t                    10                    1          1          0
+434   Cisco 7942                                         1       MODEL_CISCO_7942                              t                    10                    1          1          0
+435   Cisco 7945                                         1       MODEL_CISCO_7945                              t                    10                    1          1          0
+436   Cisco 7965                                         1       MODEL_CISCO_7965                              t                    10                    1          1          0
+437   Cisco 7975                                         1       MODEL_CISCO_7975                              t                    10                    1          1          0
+446   Cisco 3911                                         1       MODEL_CISCO_3911                              t                    10                    1          1          0
+550   Cisco ATA 187                                      1       MODEL_CISCO_ATA_187                           t                    10                    2          1          0
+631   Third-party AS-SIP Endpoint                        1       MODEL_THIRD_PARTY_AS_SIP_ENDPOINT             t                    10                    1          1          0
+36049 BEKEM 36-Button Line Expansion Module              16      MODEL_BEKEM                                   f                    0                     0          1          0
+586   Cisco 8941                                         1       MODEL_CISCO_8941                              t                    10                    1          1          0
+503   Cisco Unified Client Services Framework            1       MODEL_CLIENT_SERVICES_FRAMEWORK               t                    10                    1          1          1
+597   Cisco TelePresence MCU                             4       MODEL_CISCO_TELEPRESENCE_MCU                  f                    10                    6          33         0
+232   CKEM 36-Button Line Expansion Module               16      MODEL_CKEM_36_BUTTON                          f                    0                     0          1          0
+613   Cisco TelePresence Profile 52 (C60)                1       MODEL_CISCO_TELEPRESENCE_PROFILE_52_C60       t                    10                    1          1          0
+36208 Cisco TelePresence MX800                           1       MODEL_CISCO_TELEPRESENCE_MX800                t                    10                    1          1          0
+647   Cisco DX650                                        1       MODEL_CISCO_ZYDECO                            t                    10                    1          1          0
+612   Cisco TelePresence Profile 52 (C40)                1       MODEL_CISCO_TELEPRESENCE_PROFILE_52_C40       t                    10                    1          1          0
+626   Cisco TelePresence SX20                            1       MODEL_ASTERIX                                 t                    10                    1          1          0
+619   Cisco TelePresence TX9000                          1       MODEL_CISCO_TELEPRESENCE_TX9000               t                    10                    1          1          0
+583   Generic Multiple Screen Room System                1       MODEL_GENERIC_MULTIPLE_SCREEN_ROOM_SYSTEM     t                    10                    1          1          0
+36217 Cisco 8811                                         1       MODEL_CISCO_8811                              t                    10                    1          1          0
+540   Cisco 8961                                         1       MODEL_CISCO_8961                              t                    10                    1          1          0
+681   Cisco ATA 190                                      1       MODEL_CISCO_ATA_190                           t                    10                    2          1          0
+594   VKEM 36-Button Line Expansion Module               16      MODEL_VKEM_36_BUTTON                          f                    0                     0          1          0
+548   Cisco 6911                                         1       MODEL_CISCO_6911                              t                    10                    1          1          0
+584   Cisco TelePresence EX90                            1       MODEL_TANDBERG_EX90                           t                    10                    1          1          0
+592   Cisco 3905                                         1       MODEL_CP_3905                                 t                    10                    1          1          0
+36042 Cisco DX80                                         1       MODEL_IL_TEMPO                                t                    10                    1          1          0
+623   Cisco 7861                                         1       MODEL_CISCO_7861                              t                    10                    1          1          0
+88    Cisco IOS Homogeneous Video Conference Bridge      4       MODEL_HOMOGENEOUS_CFB                         t                    10                    6          32         0
+520   Cisco TelePresence 1100                            1       MODEL_CISCO_TELEPRESENCE_1100                 t                    10                    1          1          0
+633   Cisco TelePresence Profile 42 (C40)                1       MODEL_CISCO_TELEPRESENCE_PROFILE_42_C40       t                    10                    1          1          0
+621   Cisco 7821                                         1       MODEL_CISCO_7821                              t                    10                    1          1          0
+611   Cisco TelePresence Profile 42 (C60)                1       MODEL_CISCO_TELEPRESENCE_PROFILE_42_C60       t                    10                    1          1          0
+659   Cisco 8831                                         1       MODEL_CISCO_8831                              t                    10                    1          1          0
+479   Cisco TelePresence 3000                            1       MODEL_CISCO_TELEPRESENCE_3000                 t                    10                    1          1          0
+648   Cisco Unified Communications for RTX               1       MODEL_CISCO_UNIFIED_COMMUNICATIONS_FOR_RTX    t                    10                    1          1          0
+228   7915 24-Button Line Expansion Module               16      MODEL_7915_24_BUTTON_SIDECAR                  t                    0                     0          1          0
+652   Cisco Jabber for Tablet                            1       MODEL_CISCO_JABBER_FOR_TABLET                 t                    10                    1          1          1
+607   Cisco TelePresence Codec C60                       1       MODEL_CISCO_TELEPRESENCE_CODEC_C60            t                    10                    1          1          0
+628   IMS-integrated Mobile (Basic)                      1       MODEL_IMS_CLIENT_BASIC                        t                    10                    1          1          1
+588   Generic Desktop Video Endpoint                     1       MODEL_GENERIC_DESKTOP_VIDEO_ENDPOINT          t                    10                    1          1          1
+537   Cisco 9951                                         1       MODEL_9951                                    t                    10                    1          1          0
+591   Cisco TelePresence 1300-47                         1       MODEL_CISCO_TELEPRESENCE_1300_47              t                    10                    1          1          0
+484   Cisco 7925                                         1       MODEL_CISCO_7925                              t                    10                    1          1          0
+610   Cisco TelePresence Profile 42 (C20)                1       MODEL_CISCO_TELEPRESENCE_PROFILE_42_C20       t                    10                    1          1          0
+614   Cisco TelePresence Profile 52 Dual (C60)           1       MODEL_CISCO_TELEPRESENCE_PROFILE_52_DUAL_C60  t                    10                    1          1          0
+564   Cisco 6945                                         1       MODEL_CISCO_6945                              t                    10                    1          1          0
+493   Cisco 9971                                         1       MODEL_Cisco_9971                              t                    10                    1          1          0
+557   Cisco TelePresence 200                             1       MODEL_CISCO_TELEPRESENCE_200                  f                    10                    1          1          0
+230   7916 24-Button Line Expansion Module               16      MODEL_7916_24_BUTTON_SIDECAR                  t                    0                     0          1          0
+617   Cisco TelePresence MX200                           1       MODEL_CISCO_TELEPRESENCE_PROFILE_EXPRESS_42   t                    10                    1          1          0
+86    Cisco IOS Heterogeneous Video Conference Bridge    4       MODEL_HETEROGENEOUS_CFB                       t                    10                    6          30         0
+593   Cisco Cius                                         1       MODEL_CISCO_CIUS                              t                    10                    1          1          1
+505   Cisco TelePresence 1300-65                         1       MODEL_CISCO_TELEPRESENCE_1300                 t                    10                    1          1          0
+684   Cisco 8851                                         1       MODEL_CISCO_8851                              t                    10                    1          1          0
+582   Generic Single Screen Room System                  1       MODEL_GENERIC_SINGLE_SCREEN_ROOM_SYSTEM       t                    10                    1          1          0
+689   Cisco TelePresence MX200 G2                        1       MODEL_CISCO_TELEPRESENCE_SX20                 t                    10                    1          1          0
+575   Cisco Dual Mode for Android                        1       MODEL_CISCO_DUAL_MODE_FOR_ANDROID             t                    10                    1          1          1
+495   Cisco 6921                                         1       MODEL_CISCO_6921                              t                    10                    1          1          0
+685   Cisco 8861                                         1       MODEL_CISCO_8861                              t                    10                    1          1          0
+227   7915 12-Button Line Expansion Module               16      MODEL_7915_12_BUTTON_SIDECAR                  t                    0                     0          1          0
+585   Cisco 8945                                         1       MODEL_CISCO_8945                              t                    10                    1          1          0
+635   CTI Remote Device                                  1       MODEL_CTI_REMOTE_DEVICE                       t                    10                    1          1          0
+642   Carrier-integrated Mobile                          1       MODEL_CARRIER_INTEGRATED_MOBILE               t                    10                    1          1          1
+577   Cisco 7926                                         1       MODEL_CISCO_7926                              t                    10                    1          1          0
+87    Cisco IOS Guaranteed Audio Video Conference Bridge 4       MODEL_GUARANTEED_AUDIO_CFB                    t                    10                    6          31         0
+634   Cisco VXC 6215                                     1       MODEL_CISCO_VIRTUAL_EXPERIENCE_CLIENT_VXC6215 t                    10                    1          1          0
+606   Cisco TelePresence Codec C90                       1       MODEL_CISCO_TELEPRESENCE_CODEC_C90            t                    10                    1          1          0
+580   Cisco E20                                          1       MODEL_CISCO_E20                               t                    10                    1          1          0
+620   Cisco TelePresence TX9200                          1       MODEL_CISCO_TELEPRESENCE_TX9200               t                    10                    1          1          0
+627   Cisco TelePresence MX300                           1       MODEL_VENETO                                  t                    10                    1          1          0
+480   Cisco TelePresence 3200                            1       MODEL_CISCO_TELEPRESENCE_3200                 t                    10                    1          1          0
+590   Cisco TelePresence 500-32                          1       MODEL_CISCO_TELEPRESENCE_500_32               t                    10                    1          1          0
+632   Cisco Cius SP                                      1       MODEL_CISCO_CIUS_SP                           t                    10                    1          1          1
+615   Cisco TelePresence Profile 65 (C60)                1       MODEL_CISCO_TELEPRESENCE_PROFILE_65_C60       t                    10                    1          1          0
+497   Cisco 6961                                         1       MODEL_CISCO_6961                              t                    10                    1          1          0
+253   SPA8800                                            2       MODEL_SPA8800                                 f                    0                     2          4          0
+690   Cisco TelePresence MX300 G2                        1       MODEL_CISCO_TELEPRESENCE_MX300_G2             t                    10                    1          1          0
+682   Cisco TelePresence SX10                            1       MODEL_CISCO_TELEPRESENCE_SX10                 t                    10                    1          1          0
+496   Cisco 6941                                         1       MODEL_CISCO_6941                              t                    10                    1          1          0
+521   Transnova S3                                       1       MODEL_S3                                      t                    10                    1          1          0
+229   7916 12-Button Line Expansion Module               16      MODEL_7916_12_BUTTON_SIDECAR                  t                    0                     0          1          0
+596   Cisco TelePresence TX1310-65                       1       MODEL_CISCO_TELEPRESENCE_1310_65              t                    10                    1          1          0
+616   Cisco TelePresence Profile 65 Dual (C90)           1       MODEL_CISCO_TELEPRESENCE_PROFILE_65_DUAL_C90  t                    10                    1          1          0
+481   Cisco TelePresence 500-37                          1       MODEL_CISCO_TELEPRESENCE_500                  t                    10                    1          1          0
+558   Cisco TelePresence 400                             1       MODEL_CISCO_TELEPRESENCE_400                  f                    10                    1          1          0
+36207 Cisco TelePresence MX700                           1       MODEL_CISCO_TELEPRESENCE_MX700                t                    10                    1          1          0
+683   Cisco 8841                                         1       MODEL_CISCO_8841                              t                    10                    1          1          0
+478   Cisco TelePresence 1000                            1       MODEL_CISCO_TELEPRESENCE_1000                 t                    10                    1          1          0
+609   Cisco TelePresence Quick Set C20                   1       MODEL_CISCO_TELEPRESENCE_QUICK_SET_C20        t                    10                    1          1          0
+36043 Cisco DX70                                         1       MODEL_CISCO_DX750                             t                    10                    1          1          0
+604   Cisco TelePresence EX60                            1       MODEL_CISCO_TELEPRESENCE_EX60                 t                    10                    1          1          0
+688   Cisco TelePresence SX80                            1       MODEL_CISCO_TELEPRESENCE_SX60                 t                    10                    1          1          0
+608   Cisco TelePresence Codec C40                       1       MODEL_CISCO_TELEPRESENCE_CODEC_C40            t                    10                    1          1          0
+468   Cisco Unified Mobile Communicator                  1       MODEL_CISCO_UNIFIED_MOBILE_COMMUNICATOR       t                    10                    1          1          0
+622   Cisco 7841                                         1       MODEL_CISCO_7841                              t                    10                    1          1          0
+36210 Cisco TelePresence IX5000                          1       MODEL_CISCO_TELEPRESENCE_IX5000               t                    10                    1          1          0
+547   Cisco 6901                                         1       MODEL_CISCO_6901                              t                    10                    1          1          0
+562   Cisco Dual Mode for iPhone                         1       MODEL_TIN_CAN_TOUCH                           t                    10                    1          1          1
+645   Universal Device Template                          1       MODEL_UNIVERSAL_DEVICE_TEMPLATE               f                    10                    0          1          2
