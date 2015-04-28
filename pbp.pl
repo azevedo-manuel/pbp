@@ -9,7 +9,6 @@ use strict;
 use Config::Std;
 use LWP::UserAgent;
 use XML::Bare;
-use Data::Dumper +qw(Dumper);
 use Getopt::Long;
 use SOAP::Lite;#  +trace => 'debug';
 use Sys::RunAlone;
@@ -190,7 +189,8 @@ sub readCLIArguments{
 	'logfile'         => \$configData{logfile},
 	'rischunksize'    => \$configData{rischunksize},
 	'help|h'          => \$help,
-	'version|V'	  => \$version
+	'version|V'	  => \$version,
+	'debug|d'	  => \$debug
     );
     
     # If the AXL username is not defined, assume it's the same as the bkgusername/bkgpassword
@@ -228,13 +228,15 @@ sub readCLIArguments{
 	print "                        Use * to replace with phone model resolution directory\n";
 	print " --backgroundURL value  The URL where the background image is. \n";
 	print "                        Use * to replace with phone model resolution directory\n";
-	print " --logging or -l        List phones that are being used and push status\n";
-	print " --logfile              Export to loggin to a file. DEFAULT: log into STDIN\n";
-	print " --version or -v        This program's version. When refering to bugs, get the version here\n";
+	print " --logging or -l        List phones that are being used and push status     ** NOT IMPLEMENTED **\n";
+	print " --logfile              Export to loggin to a file. DEFAULT: log into STDIN ** NOT IMPLEMENTED \n";
+	print " --version or -V        This program's version. When refering to bugs, get the version here\n";
 	print " --rischunksize         The number of devices per RIS request. DEFAULT is '$configData{rischunksize}'\n";
-	print " --help or -h           This menu\n\n";
+	print " --help or -h           This menu\n";
+	print " --debug or -d          Enable diagnostics debug messages\n\n";
 	print "Only options with DEFAULT values are optional. All the remaining\n";
 	print "need to be configured either in the $configFile or as an command line argument\n\n";
+	print "All options are case sensitive!\n";
 	exit 0;
     }
     
