@@ -1,6 +1,33 @@
 #!/usr/bin/env perl
+#
+#
+# phone background pusher - pbp
+# Copyright (C) 2015 Manuel Azevedo
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# ** Don't forget to install Config::Std, XML::Bare, Getopt::Long,
+#    Text::Table, SOAP::Lite and Sys::RunAlone modules in Perl **
+#
 
-use constant version     => "0.2 - 28.Apr.2015";
+#
+# Change log:
+# Version 0.1 - Initial version
+# Version 0.2 - Clean-up, bug fixes - Initial release
+
+
+use constant version     => "0.2 - 29.Apr.2015";
 use constant programName => "phone background push - pbp";
 use constant developer   => "Manuel Azevedo";
 
