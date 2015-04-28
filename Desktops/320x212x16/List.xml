@@ -1,10 +1,10 @@
 <CiscoIPPhoneImageList>
-	<ImageItem Image="TFTP:Desktops/320x212x16/7965-TAP-CS-TJG-tn.png "       URL="TFTP:Desktops/320x212x16/7965-TAP-CS-TJG.png"/>
-	<ImageItem Image="TFTP:Desktops/320x212x16/7965-cabo-espichel-tn.png"     URL="TFTP:Desktops/320x212x16/7965-cabo-espichel.png"/>
-	<ImageItem Image="TFTP:Desktops/320x212x16/7965-carnations-tn.png "       URL="TFTP:Desktops/320x212x16/7965-carnations.png"/>
-	<ImageItem Image="TFTP:Desktops/320x212x16/7965-dragon-tn.png "           URL="TFTP:Desktops/320x212x16/7965-dragon.png"/>
-	<ImageItem Image="TFTP:Desktops/320x212x16/7965-gruyere-cheese-tn.png "   URL="TFTP:Desktops/320x212x16/7965-gruyere-cheese.png"/>
-	<ImageItem Image="TFTP:Desktops/320x212x16/7965-gruyeres-chateau-tn.png " URL="TFTP:Desktops/320x212x16/7965-gruyeres-chateau.png"/>
-	<ImageItem Image="TFTP:Desktops/320x212x16/7965-raspberry-tn.png"         URL="TFTP:Desktops/320x212x16/7965-raspberry.png"/>
-	<ImageItem Image="TFTP:Desktops/320x212x16/7965-rheinfalls-tn.png "       URL="TFTP:Desktops/320x212x16/7965-rheinfalls.png"/>
+	<ImageItem Image="TFTP:Desktops/320x212x16/TAP-CS-TJG-tn.png"     URL="TFTP:Desktops/320x212x16/TAP-CS-TJG.png"/>
+	<ImageItem Image="TFTP:Desktops/320x212x16/cabo-espichel-tn.png"  URL="TFTP:Desktops/320x212x16/cabo-espichel.png"/>
+	<ImageItem Image="TFTP:Desktops/320x212x16/carnations-tn.png"     URL="TFTP:Desktops/320x212x16/carnations.png"/>
+	<ImageItem Image="TFTP:Desktops/320x212x16/dragon-tn.png"         URL="TFTP:Desktops/320x212x16/dragon.png"/>
+	<ImageItem Image="TFTP:Desktops/320x212x16/gruyere-cheese-tn.png" URL="TFTP:Desktops/320x212x16/gruyere-cheese.png"/>
+	<ImageItem Image="TFTP:Desktops/320x212x16/gruyeres-tn.png"       URL="TFTP:Desktops/320x212x16/gruyeres.png"/>
+	<ImageItem Image="TFTP:Desktops/320x212x16/raspberry-tn.png"      URL="TFTP:Desktops/320x212x16/raspberry.png"/>
+	<ImageItem Image="TFTP:Desktops/320x212x16/rheinfalls-tn.png"     URL="TFTP:Desktops/320x212x16/rheinfalls.png"/>
 </CiscoIPPhoneImageList>

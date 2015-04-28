@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-use constant version     => "0.1 - 25.Apr.2015";
+use constant version     => "0.2 - 28.Apr.2015";
 use constant programName => "phone background push - pbp";
 use constant developer   => "Manuel Azevedo";
 
@@ -14,6 +14,9 @@ use Getopt::Long;
 use SOAP::Lite;#  +trace => 'debug';
 use Sys::RunAlone;
 
+
+# Record time when the script starts
+my $runTime = time();
 
 # Global program variables
 # Change them here, not in the code bellow
@@ -95,7 +98,7 @@ sub setBackground {
     my $bkgThn  =@_[4];
     my $error;
     my $response;
-    
+   
     # This XML request is pushed to the Phone
     my $setBkgXML = "<setBackground><background><image>$bkgURL</image><icon>$bkgThn</icon></background></setBackground>";
     my $phoneWeb  = "http://$phoneIP/CGI/Execute";
@@ -133,16 +136,19 @@ sub setBackground {
     }
     # Return data to caller
     return($error,$response);
-    
 }
 
 # Check the configuration file for the parameters
 # Update the global config hash with any value found on the config file
 sub readConfigFile {
+    # Does the config file exist?
     if ( -e $configFile ) {
 	debugMsg("Config file: File $configFile found");
+	
+	# Read the configuration from configuration file
 	read_config $configFile => my %config;
 	
+	# Update the global %configData hash with the options read from the config file
 	foreach my $confKey (sort keys %configData) {
 	    if ($config{''}{$confKey}){
 		$configData{$confKey} = $config{''}{$confKey};
@@ -151,7 +157,6 @@ sub readConfigFile {
 		debugMsg("Config file: %-15s = ** Undefined in config file **",$confKey);
 	    }
 	}
-	
     } else {
 	debugMsg("Config file: No '$configFile' found. Assuming default values");
     }
@@ -169,7 +174,8 @@ sub readCLIArguments{
     
     my $help;
     my $version;
-    
+
+    # Get the arguments from the CLI
     Getopt::Long::Configure ("bundling");
     GetOptions(
 	'quiet|q'         => \$configData{quiet},
@@ -182,10 +188,10 @@ sub readCLIArguments{
 	'backgroundURL=s' => \$configData{backgroundURL},
 	'logging|l'       => \$configData{logging},
 	'logfile'         => \$configData{logfile},
+	'rischunksize'    => \$configData{rischunksize},
 	'help|h'          => \$help,
-	'version|v'	  => \$version
+	'version|V'	  => \$version
     );
-    
     
     # If the AXL username is not defined, assume it's the same as the bkgusername/bkgpassword
     if (!defined($configData{axlusername})){
@@ -195,7 +201,6 @@ sub readCLIArguments{
     }
     
     # Only used to troubleshoot config data merge
-    #
     if ($debug) {
 	foreach my $confKey (sort keys %configData) {
 	    if ($configData{$confKey}){
@@ -206,11 +211,12 @@ sub readCLIArguments{
 	}
     }
     
+    # Print help to the user. Exit!
     if ($help){
 	print "\nUsage: ";
 	print $0." -options \n\n";
 	print "where options are:\n";
-	print " --quiet or -q          Don't show any output. DEFAULT: show output \n";
+	print " --quiet or -q          Don't show any output. DEFAULT is '$configData{quiet}' \n";
 	print " --bkgusername value    End user's username that has the phones associated with\n";
 	print " --bkgpassword value    End user's password\n";
 	print " --axlusername value    Application/End user username for CUCM AXL access.\n";
@@ -225,17 +231,20 @@ sub readCLIArguments{
 	print " --logging or -l        List phones that are being used and push status\n";
 	print " --logfile              Export to loggin to a file. DEFAULT: log into STDIN\n";
 	print " --version or -v        This program's version. When refering to bugs, get the version here\n";
+	print " --rischunksize         The number of devices per RIS request. DEFAULT is '$configData{rischunksize}'\n";
 	print " --help or -h           This menu\n\n";
 	print "Only options with DEFAULT values are optional. All the remaining\n";
 	print "need to be configured either in the $configFile or as an command line argument\n\n";
 	exit 0;
     }
     
+    # Print version information
     if ($version){
 	print "\n";
 	print "Application : ".programName."\n";
 	print "Version     : ".version."\n";
-	print "Copyright   : ".developer."\n\n";
+	print "Copyright   : ".developer."\n";
+	print "Platform    : $^O\n\n";
 	exit 0;
     }
 }
@@ -267,20 +276,22 @@ sub validateConfig{
 #
 # Usage: my ($model,$res) = getPhoneInfo($phoneID);
 #
-#
 sub getPhoneInfo{
+
+    # Get the ID from the function call
+    my $phoneID = $_[0];
     
     # Data retrieved from CUCM 10.5
     # I imagine it won't change between versions
     # Needs to be checked
     #
     my %phones = (
-	369   => {model =>'7906', res =>'95x34x1'},
-	307   => {model =>'7911', res =>'95x34x1'},
-	434   => {model =>'7942', res =>'320x196x4'},
+	369   => {model =>'7906', res =>'95x34x1'   },
+	307   => {model =>'7911', res =>'95x34x1'   },
+	434   => {model =>'7942', res =>'320x196x4' },
 	435   => {model =>'7945', res =>'320x212x16'},
 	404   => {model =>'7962', res =>'320x212x16'},
-	436   => {model =>'7965', res =>'320x196x4'},
+	436   => {model =>'7965', res =>'320x196x4' },
 	30006 => {model =>'7970', res =>'320x212x12'},
 	119   => {model =>'7971', res =>'320x212x12'},
 	437   => {model =>'7975', res =>'320x216x16'},
@@ -289,29 +300,29 @@ sub getPhoneInfo{
 	683   => {model =>'8841', res =>'800x480x24'},
 	684   => {model =>'8851', res =>'800x480x24'},
 	685   => {model =>'8861', res =>'800x480x24'},
-	586   => {model =>'8941', res =>'640x380x24'},
-	585   => {model =>'8945', res =>'640x380x24'},
-	540   => {model =>'8961', res =>'640x380x24'},
-	537   => {model =>'9951', res =>'640x380x24'},
-	493   => {model =>'9971', res =>'640x380x24'},
+	586   => {model =>'8941', res =>'640x480x24'},
+	585   => {model =>'8945', res =>'640x480x24'},
+	540   => {model =>'8961', res =>'640x480x24'},
+	537   => {model =>'9951', res =>'640x480x24'},
+	493   => {model =>'9971', res =>'640x480x24'},
     );
     
-    my $phoneID = $_[0];
-    
+
+    # If found, return model and resolution
     if (exists$phones{$phoneID}){
 	debugMsg("PhoneInfo: Found model for ID '%s'",$phoneID);
 	return($phones{$phoneID}{model},$phones{$phoneID}{res});
-    } else {
+    } else { # Otherwise, return '0'
 	debugMsg("PhoneInfo: Phone ID not found");
 	return(0);
     }
 }
 
 #
-# function
+# function getUserPhoneList();
 #
-# This function uses the global configuration variable, no need to pass it as an argument
-
+# This function uses the global configuration variable, no need to pass it any argument
+#
 sub getUserPhoneList {
     
     # Usually CUCM is implemented with self-signed certificates and AXL
@@ -320,27 +331,39 @@ sub getUserPhoneList {
     # so you don't have to put CUCM's certificate in your trust store.
     # ** BE SURE YOU UNDERSTAND WHAT THAT MEANS **
     $ENV{PERL_LWP_SSL_VERIFY_HOSTNAME}=0;
-    
+ 
+    # Passing credentials in the SOAP::Lite request does not seem to work with CUCM.
+    # Therefore we push the credentials anytime a request is made
+    # This has the benefict of: ignoring the realm, directly authenticates
+    # However it looks ugly!
     BEGIN {
     	sub SOAP::Transport::HTTP::Client::get_basic_credentials {
     	    return ($configData{axlusername} => $configData{axlpassword});
     	};
     }
     
+    # Built and tested for version 8.5 on a 10.5 CUCM!
     my $cm = new SOAP::Lite
 	on_action   => (sub {return "CMDB:DB ver=8.5"}),
 	proxy       => "https://$configData{cucm}:8443/axl/",
-	credentials => ["$configData{cucm}:80","Cisco AXL API",$configData{axlusername} => $configData{axlpassword}],
 	ns          => "http://www.cisco.com/AXL/API/8.5";
     
+    # Make an AXL getUser request for userid defined in the global config data.
     my $res = $cm->getUser(SOAP::Data->name("userid" => $configData{bkgusername}));
     
+    my $registered;
+    
+    # Process the answer
     unless ($res->fault){
+	# Get on the answer from the XML tree
 	my @AXLdevices = $res->valueof('//getUserResponse/return/user/associatedDevices/device');
+	
+	# Get each phone
 	foreach (@AXLdevices){
 	    debugMsg("Get phone list: Found device '%s'",$_);
 	    
 	    # Define a data structure to store the device data
+	    # Define it here so it initializes for a new hash so you can push it into the %devices hash
 	    my %device = (
 		devicename  => undef,
 		ipaddress   => undef,
@@ -349,18 +372,22 @@ sub getUserPhoneList {
 		description => undef
 	    );
 	    
+	    # Defining the value for both key and hash value is usefull further on
 	    $device{devicename} = $_;
 	    $devices{$_}=\%device;
+	    $registered++;
 	}
     } else {
+	# For some reason could not connect to CUCM. There's no reason to continue
 	printf "CUCM error: %s - %s\n",$res->faultcode,$res->faultstring;
 	exit 1;
     }
-	
+    # Return the total number of configured phones found
+    return($registered++);
 }
 
 #
-# function getPhoneStatus
+# function getPhoneStatus();
 #
 # This function checks and sets the status of the phones existing in the global %devices hash
 # It returns the total number of registered phones found
@@ -376,19 +403,25 @@ sub getPhoneStatus{
    
     # Two little hacks to make SOAP to work correctly with CUCM
     BEGIN {
-	# On all SOAP auth requests, send the credentials
+	# Passing credentials in the SOAP::Lite request does not seem to work with CUCM.
+	# Therefore we push the credentials anytime a request is made
+	# This has the benefict of: ignoring the realm, directly authenticates
+	# However it looks ugly!
 	sub SOAP::Transport::HTTP::Client::get_basic_credentials {
 	    return ($configData{axlusername} => $configData{axlpassword});
 	};
 
 	# Let's ignore the WSDL custom types - this is dangerous, but will work!
+	# For some reason (my ignorance surely) I cannot make SOAP::Lite understand
+	# the answer from CUCM. Even though the type is defined in the WSDL.
+	# So this basically makes SOAP::Lite ignore the type
 	sub SOAP::Deserializer::typecast {
 	    shift;
 	    return shift
 	};
     }
     
-   
+    # Built and tested for version 8.5 on a 10.5 CUCM!
     my $cm = new SOAP::Lite
 	encodingStyle => '',
 	on_action     => (sub {return "CUCM:DB ver=8.5"}),
@@ -437,8 +470,11 @@ sub getPhoneStatus{
 	    )
 	);
 	
+	# Check the answer
 	unless($res->fault){
+	    # Get the answer from the XML tree
 	    my @resNode = $res->valueof('//SelectCmDeviceResponse/SelectCmDeviceResult/CmNodes/item/CmDevices/item');
+	    # For each answer, update the global %devices hash
 	    foreach (@resNode){
 		$devices{$_->{Name}}{ipaddress}     = $_->{IpAddress};
 		$devices{$_->{Name}}{model}         = $_->{Model};
@@ -446,20 +482,23 @@ sub getPhoneStatus{
 		$devices{$_->{Name}}{description}   = $_->{Description};
 	    }
 	    debugMsg("Get phone status: %i phone(s) are registered in chunk %i",scalar(@resNode),$i);
+	    # Count how many registered devices we collected so far
 	    $registered +=scalar(@resNode);
 	} else {
-	    printf "CUCM error: %s - %s\n",$res->faultcode,$res->faultstring;
+	    # Oops, CUCM connection failed...
+	    statusMsg("CUCM error: %s - %s\n",$res->faultcode,$res->faultstring);
 	    exit 1;
 	}
 	$i++;
     }
-    
+    # Return the total number of registered phones found
     return $registered;
 }
 
-
-
+#
+#
 # Main program execution
+#
 #
 
 debugMsg('Main: Getting configuration file');
@@ -472,11 +511,10 @@ debugMsg('Main: Validating if there are undefined options');
 validateConfig();
 
 debugMsg('Main: Querying the AXL database for phones associated with %s',$configData{bkgusername});
-getUserPhoneList();
-my $totalConfiguredPhones = scalar(keys %devices);
+my $totalConfiguredPhones = getUserPhoneList();;
 
 if ($totalConfiguredPhones) {
-    statusMsg("Found %i devices associated to user '%s'.",$totalConfiguredPhones,$configData{bkgusername});
+    statusMsg("Found %i device(s) associated to user '%s'",$totalConfiguredPhones,$configData{bkgusername});
 } else {
     statusMsg("No configured devices found. You need to associated devices to user '%s'",$configData{bkgusername});
     statusMsg("or configure another user");
@@ -485,16 +523,54 @@ if ($totalConfiguredPhones) {
 
 my $totalRegistered=getPhoneStatus();
 
+statusMsg("Found %i device(s) registered",$totalRegistered);
+
 if ($totalRegistered) {
+    my $i=1;
     #take care of pushing the background to the phones
+    # ($error,$response) = setBackground ($username,$password,$phoneIP,$bkgURL,$bkgThn)
+    debugMsg('Main: Checking all devices. If registered, push background');
+    foreach my $device (values %devices) {
+	if ($device->{status} eq 'Registered') {
+	    debugMsg("Main: $device->{devicename} : $device->{ipaddress} is registered");
+	    (my $model, my $res) = getPhoneInfo($device->{model});
+	    if ($model) {
+		debugMsg("Main: $device->{devicename} model is '$model' and resolution is '$res'");
+		my $pushURL = $configData{backgroundURL};
+		my $pushThn = $configData{thumbnailURL};
+		$pushURL =~ s/\*/$res/g;
+		$pushThn =~ s/\*/$res/g;
+		debugMsg("Main: Background URL to push to device $device->{devicename} is '$pushURL'");
+		debugMsg("Main: Thumbnail URL to push to device $device->{devicename} is '$pushThn'");
+		
+		(my $error,my $response) = setBackground (
+		    $configData{bkgusername},
+		    $configData{bkgpassword},
+		    $device->{ipaddress},
+		    $pushURL,
+		    $pushThn
+		);
+		
+		if($response){
+		    statusMsg("$i/$totalRegistered - Device '$device->{devicename}' update status: $response")
+		} else {
+		    statusMsg("$i/$totalRegistered - Device '$device->{devicename}' update failed: $error")
+		}
+		
+	    } else{
+		statusMsg("$i/$totalRegistered - Device '$device->{devicename}' is not a supported model");
+	    }
+	$i++;
+	}
+	
+    }
 } else {
     debugMsg("Main: Total number of registered phones returned is %i",$totalRegistered);
     statusMsg("There seem to be no phones registered");
     exit 0
 }
 
-#print Dumper(\%devices);
-
-debugMsg("Main: Finished executing");
+$runTime = time()-$runTime;
+statusMsg("Finished in $runTime seconds!");
 
 __END__
