@@ -22,7 +22,7 @@ my $runTime = time();
 # Change them here, not in the code bellow
 
 my $configFile = 'pbp.conf';   # Assume file is local to the app
-my $debug      = 1;            # 0 for FALSE, anything else is TRUE
+my $debug      = 0;            # 0 for FALSE, anything else is TRUE
 
 # Configuration parameters
 # These are used globally througout the script
