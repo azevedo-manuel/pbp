@@ -25,9 +25,13 @@
 # Change log:
 # Version 0.1 - Initial version
 # Version 0.2 - Clean-up, bug fixes - Initial release
+# Version 0.3 - Added conditional load of Sys::RunAlone module. In Windows it's not loaded.
+#               Corrected some spelling mistakes
+#               Added additional info on the HTTP error responses from the phones
+#
 
 
-use constant version     => "0.2 - 29.Apr.2015";
+use constant version     => "0.3 - 29.Apr.2015";
 use constant programName => "phone background push - pbp";
 use constant developer   => "Manuel Azevedo";
 
@@ -38,7 +42,7 @@ use LWP::UserAgent;
 use XML::Bare;
 use Getopt::Long;
 use SOAP::Lite;#  +trace => 'debug';
-use Sys::RunAlone;
+if  ($^O ne "MSWin32") {require Sys::RunAlone; import Sys::RunAlone; }
 
 
 # Record time when the script starts
@@ -51,7 +55,7 @@ my $configFile = 'pbp.conf';   # Assume file is local to the app
 my $debug      = 0;            # 0 for FALSE, anything else is TRUE
 
 # Configuration parameters
-# These are used globally througout the script
+# These are used globally throughout the script
 # They are first checked if existing on the configuration file and for set values, set accordingly
 # If there is a switch it will overwrite the configuration file
 # If after these two steps the variable is still undefined
@@ -103,7 +107,7 @@ sub statusMsg{
 #
 # function setBackground($user,$password,$phoneIP,$bkgURL,$bkgThn)
 #
-# Pushes the configuration to the phone and returns either an error or a sucess response status
+# Pushes the configuration to the phone and returns either an error or a success response status
 #
 # Usage:
 # ($error,$response) = setBackground ($username,$password,$phoneIP,$bkgURL,$bkgThn)
@@ -144,10 +148,9 @@ sub setBackground {
     # This does not yet mean the phone background was set, but could indicated the phone's web-service is not enabled
     # or the phone is not reachable.
     if ($post->is_success){
-	
-	# HTTP request was a sucess. Let's decode the phone's answer
+	# HTTP request was a success. Let's decode the phone's answer
 	my $content = $post->decoded_content();
-	
+
 	# Usually the phone answers with a XML response. Let's decode it.
 	my $xmlObj = new XML::Bare (text=>$content);
 	my $xmlAns = $xmlObj->parse();
@@ -157,8 +160,18 @@ sub setBackground {
 	# If the background was correctly pushed, the phone will answer in this value
 	$response=$xmlAns->{CiscoIPPhoneResponse}->{ResponseItem}->{Data}->{value};
     } else {
-	# There was an HTTP error. Report the error
-	$error = $post->status_line;
+	# HTTP request was a success. Let's decode the phone's answer
+	my $content = $post->decoded_content();
+
+	# Usually the phone answers with a XML response. Let's decode it.
+	my $xmlObj = new XML::Bare (text=>$content);
+	my $xmlAns = $xmlObj->parse();
+
+	# If there was an error setting the image, the phone returns this value
+	$error=$xmlAns->{errorResponse}->{type}->{value};
+	$error=$error." - ".$xmlAns->{errorResponse}->{data}->{value};
+
+	$error = $post->status_line." - ".$error;
     }
     # Return data to caller
     return($error,$response);
@@ -282,7 +295,7 @@ sub readCLIArguments{
 #
 # function validateConfig()
 #
-# After reading the configuration from the configuration file or commandline arguments
+# After reading the configuration from the configuration file or command line arguments
 # if there are any undefined values, print error and abort.
 #
 sub validateConfig{
@@ -362,9 +375,9 @@ sub getUserPhoneList {
     $ENV{PERL_LWP_SSL_VERIFY_HOSTNAME}=0;
  
     # Passing credentials in the SOAP::Lite request does not seem to work with CUCM.
-    # Therefore we push the credentials anytime a request is made
-    # This has the benefict of: ignoring the realm, directly authenticates
-    # However it looks ugly!
+    # Therefore we push the credentials any time a request is made
+    # This has the advantage of: ignoring the realm as directly sends the auth request
+    # However it looks ugly and it's a bad practice!
     BEGIN {
     	sub SOAP::Transport::HTTP::Client::get_basic_credentials {
     	    return ($configData{axlusername} => $configData{axlpassword});
@@ -401,7 +414,7 @@ sub getUserPhoneList {
 		description => undef
 	    );
 	    
-	    # Defining the value for both key and hash value is usefull further on
+	    # Defining the value for both key and hash value is useful further on
 	    $device{devicename} = $_;
 	    $devices{$_}=\%device;
 	    $registered++;
@@ -433,9 +446,9 @@ sub getPhoneStatus{
     # Two little hacks to make SOAP to work correctly with CUCM
     BEGIN {
 	# Passing credentials in the SOAP::Lite request does not seem to work with CUCM.
-	# Therefore we push the credentials anytime a request is made
-	# This has the benefict of: ignoring the realm, directly authenticates
-	# However it looks ugly!
+	# Therefore we push the credentials any time a request is made
+	# This has the advantage of: ignoring the realm as it directly authenticates
+	# However it looks ugly and it's a bad practice.
 	sub SOAP::Transport::HTTP::Client::get_basic_credentials {
 	    return ($configData{axlusername} => $configData{axlpassword});
 	};
