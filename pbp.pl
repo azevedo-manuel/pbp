@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ** Don't forget to install Config::Std, XML::Bare, Getopt::Long,
-#    Text::Table, SOAP::Lite and Sys::RunAlone modules in Perl **
+#    Text::Table and SOAP::Lite modules in Perl **
 #
 
 #
@@ -28,10 +28,14 @@
 # Version 0.3 - Added conditional load of Sys::RunAlone module. In Windows it's not loaded.
 #               Corrected some spelling mistakes
 #               Added additional info on the HTTP error responses from the phones
-#
+# Version 0.4 - Added the possibility to add different config files with --conf or -c. If none given
+#               app tries to search pbp.conf instead.
+#               Removed Sys::RunAlone. There will be no checking if the app is already running
+#	        Now debug can be started from the beginning of the app
+#	        Cleaned some spelling errors
 
 
-use constant version     => "0.3 - 29.Apr.2015";
+use constant version     => "0.4 - 09.Jun.2015";
 use constant programName => "phone background push - pbp";
 use constant developer   => "Manuel Azevedo";
 
@@ -42,8 +46,6 @@ use LWP::UserAgent;
 use XML::Bare;
 use Getopt::Long;
 use SOAP::Lite;#  +trace => 'debug';
-if  ($^O ne "MSWin32") {require Sys::RunAlone; import Sys::RunAlone; }
-
 
 # Record time when the script starts
 my $runTime = time();
@@ -51,8 +53,25 @@ my $runTime = time();
 # Global program variables
 # Change them here, not in the code bellow
 
-my $configFile = 'pbp.conf';   # Assume file is local to the app
 my $debug      = 0;            # 0 for FALSE, anything else is TRUE
+
+# Do not change code below this line ----------------------
+
+my $configFile = 'pbp.conf';   # Assume config file is local to the app
+
+# The user might have defined another configuration file. If so, overwrite this value
+{
+    # We create this scope not to lose the original @ARGV
+    local @ARGV = @ARGV;
+    Getopt::Long::Configure ("bundling","pass_through");
+    GetOptions(
+    'conf|c=s'   => \$configFile,
+    'debug|d'	 => \$debug
+    );
+}
+
+debugMsg("Using config file '$configFile'");
+
 
 # Configuration parameters
 # These are used globally throughout the script
@@ -182,7 +201,7 @@ sub setBackground {
 sub readConfigFile {
     # Does the config file exist?
     if ( -e $configFile ) {
-	debugMsg("Config file: File $configFile found");
+	debugMsg("Config file: File '$configFile' found");
 	
 	# Read the configuration from configuration file
 	read_config $configFile => my %config;
@@ -197,7 +216,7 @@ sub readConfigFile {
 	    }
 	}
     } else {
-	debugMsg("Config file: No '$configFile' found. Assuming default values");
+	debugMsg("Config file: No config file '$configFile' found. Assuming default values");
     }
 }
 
@@ -230,7 +249,8 @@ sub readCLIArguments{
 	'rischunksize'    => \$configData{rischunksize},
 	'help|h'          => \$help,
 	'version|V'	  => \$version,
-	'debug|d'	  => \$debug
+	'debug|d'	  => \$debug,
+        'conf|c'	  => \$configFile
     );
     
     # If the AXL username is not defined, assume it's the same as the bkgusername/bkgpassword
@@ -256,6 +276,8 @@ sub readCLIArguments{
 	print "\nUsage: ";
 	print $0." -options \n\n";
 	print "where options are:\n";
+	print " --conf  or -c          Define an alternate configuration file. Parameters will still\n";
+	print "                        overide configuration file values though \n";
 	print " --quiet or -q          Don't show any output. DEFAULT is '$configData{quiet}' \n";
 	print " --bkgusername value    End user's username that has the phones associated with\n";
 	print " --bkgpassword value    End user's password\n";
@@ -546,7 +568,7 @@ sub getPhoneStatus{
 debugMsg('Main: Getting configuration file');
 readConfigFile();
 
-debugMsg('Main: Getting configurtion from command line');
+debugMsg('Main: Getting configuration from command line');
 readCLIArguments();
 
 debugMsg('Main: Validating if there are undefined options');
