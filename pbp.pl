@@ -37,7 +37,7 @@
 #               Changed the way SSL self-signed certificates are handled by the app
 
 
-use constant version     => "0.4 - 09.Jun.2015";
+use constant version     => "0.5 - 03.Jul.2015";
 use constant programName => "phone background push - pbp";
 use constant developer   => "Manuel Azevedo";
 
@@ -166,7 +166,7 @@ sub setBackground {
     # At least the 8945 requires that the realm is the device's SEP followed by
     # the MAC address in all lower case
 
-    if ($model=585) {
+    if ($model==585) {
        $realm=$deviceName="SEP".lc(substr($deviceName,3,12));
     } else {
        $realm="user";
