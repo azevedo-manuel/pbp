@@ -33,6 +33,8 @@
 #               Removed Sys::RunAlone. There will be no checking if the app is already running
 #	        Now debug can be started from the beginning of the app
 #	        Cleaned some spelling errors
+# Version 0.5 - Added support to push backgrounds to the 8945, that requires a different http realm
+#               Changed the way SSL self-signed certificates are handled by the app
 
 
 use constant version     => "0.4 - 09.Jun.2015";
@@ -46,6 +48,7 @@ use LWP::UserAgent;
 use XML::Bare;
 use Getopt::Long;
 use SOAP::Lite;#  +trace => 'debug';
+#use Data::Dumper;
 
 # Record time when the script starts
 my $runTime = time();
@@ -124,29 +127,34 @@ sub statusMsg{
 
 
 #
-# function setBackground($user,$password,$phoneIP,$bkgURL,$bkgThn)
+# function setBackground($user,$password,$phoneIP,$deviceName,$model,$bkgURL,$bkgThn)
 #
 # Pushes the configuration to the phone and returns either an error or a success response status
 #
 # Usage:
-# ($error,$response) = setBackground ($username,$password,$phoneIP,$bkgURL,$bkgThn)
+# ($error,$response) = setBackground ($username,$password,$phoneIP,$deviceName,$model,$bkgURL,$bkgThn)
 #
 # where:
 # $username and $password are from CUCM's End User that has both phones associated with
 # $phoneIP is the IP address of the web and customization enabled phone
+# $deviceName is the SEP device name from CUCM
+# $model is the device type ID (necessary because some phones have different settings)
 # $bkgURL is the background image URL.
 # $bkgThn is the background image thumbnail URL.
 #
 # The function returns $error and $response. If $error is defined then the background push failed for some reason
 sub setBackground {
     
-    my $user    =@_[0];
-    my $password=@_[1];
-    my $phoneIP =@_[2];
-    my $bkgURL  =@_[3];
-    my $bkgThn  =@_[4];
+    my $user      =@_[0];
+    my $password  =@_[1];
+    my $phoneIP   =@_[2];
+    my $deviceName=@_[3];
+    my $model     =@_[4];
+    my $bkgURL    =@_[5];
+    my $bkgThn    =@_[6];
     my $error;
     my $response;
+    my $realm;
    
     # This XML request is pushed to the Phone
     my $setBkgXML = "<setBackground><background><image>$bkgURL</image><icon>$bkgThn</icon></background></setBackground>";
@@ -155,8 +163,18 @@ sub setBackground {
     # Create new connection
     my $ua = LWP::UserAgent->new();
     
+    # At least the 8945 requires that the realm is the device's SEP followed by
+    # the MAC address in all lower case
+
+    if ($model=585) {
+       $realm=$deviceName="SEP".lc(substr($deviceName,3,12));
+    } else {
+       $realm="user";
+    }
+    debugMsg("Phone realm: '$realm'");
+    
     # Phone's will query CUCM for authorization.
-    $ua->credentials("$phoneIP:80","user",$user,$password);
+    $ua->credentials("$phoneIP:80",$realm,$user,$password);
     # Timeout was lowered from 300s to 5s
     $ua->timeout(5);
     
@@ -389,12 +407,6 @@ sub getPhoneInfo{
 #
 sub getUserPhoneList {
     
-    # Usually CUCM is implemented with self-signed certificates and AXL
-    # cannot be accessed over HTTP, only with HTTPS.
-    # The following command disables SSL hostname verification
-    # so you don't have to put CUCM's certificate in your trust store.
-    # ** BE SURE YOU UNDERSTAND WHAT THAT MEANS **
-    $ENV{PERL_LWP_SSL_VERIFY_HOSTNAME}=0;
  
     # Passing credentials in the SOAP::Lite request does not seem to work with CUCM.
     # Therefore we push the credentials any time a request is made
@@ -411,6 +423,17 @@ sub getUserPhoneList {
 	on_action   => (sub {return "CMDB:DB ver=8.5"}),
 	proxy       => "https://$configData{cucm}:8443/axl/",
 	ns          => "http://www.cisco.com/AXL/API/8.5";
+   # Usually CUCM is implemented with self-signed certificates and AXL
+    # cannot be accessed over HTTP, only with HTTPS.
+    # The following two commands disable SSL hostname verification
+    # and self-signed certificates, so you don't have to put CUCM's 
+    # certificate in your trust store.
+    # ** BE SURE YOU UNDERSTAND WHAT THAT MEANS SECURITY WISE **
+
+    $cm->transport->ssl_opts(
+        SSL_verify_mode => 0, 
+        verify_hostname => 0
+    );
     
     # Make an AXL getUser request for userid defined in the global config data.
     my $res = $cm->getUser(SOAP::Data->name("userid" => $configData{bkgusername}));
@@ -457,14 +480,7 @@ sub getUserPhoneList {
 # It returns the total number of registered phones found
 sub getPhoneStatus{
 
-    # Usually CUCM is implemented with self-signed certificates and AXL
-    # cannot be accessed over HTTP, only with HTTPS.
-    # The following command disables SSL hostname verification
-    # so you don't have to put CUCM's certificate in your trust store.
-    # ** BE SURE YOU UNDERSTAND WHAT THAT MEANS **
-    $ENV{PERL_LWP_SSL_VERIFY_HOSTNAME}=0;
-    
-   
+
     # Two little hacks to make SOAP to work correctly with CUCM
     BEGIN {
 	# Passing credentials in the SOAP::Lite request does not seem to work with CUCM.
@@ -491,7 +507,17 @@ sub getPhoneStatus{
 	on_action     => (sub {return "CUCM:DB ver=8.5"}),
 	proxy         => "https://$configData{cucm}:8443/realtimeservice/services/RisPort",
         ns            => "http://schemas.cisco.com/ast/soap/";
-	
+   # Usually CUCM is implemented with self-signed certificates and AXL
+    # cannot be accessed over HTTP, only with HTTPS.
+    # The following two commands disable SSL hostname verification
+    # and self-signed certificates, so you don't have to put CUCM's 
+    # certificate in your trust store.
+    # ** BE SURE YOU UNDERSTAND WHAT THAT MEANS SECURITY WISE **
+
+    $cm->transport->ssl_opts(
+        SSL_verify_mode => 0, 
+        verify_hostname => 0
+    );
    
     # RISDB has a limit on the maximum of devices
     # By default it's 200, but can be defined by the 'rischunksize' parameter
@@ -611,6 +637,8 @@ if ($totalRegistered) {
 		    $configData{bkgusername},
 		    $configData{bkgpassword},
 		    $device->{ipaddress},
+		    $device->{devicename},
+		    $model,
 		    $pushURL,
 		    $pushThn
 		);
