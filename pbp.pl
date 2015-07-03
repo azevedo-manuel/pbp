@@ -166,7 +166,7 @@ sub setBackground {
     # At least the 8945 requires that the realm is the device's SEP followed by
     # the MAC address in all lower case
 
-    if ($model==585) {
+    if ($model==8945) {
        $realm=$deviceName="SEP".lc(substr($deviceName,3,12));
     } else {
        $realm="user";
