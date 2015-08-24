@@ -36,10 +36,9 @@
 # Version 0.5 - Added support to push backgrounds to the 8945, that requires a different http realm
 #               Changed the way SSL self-signed certificates are handled by the app
 # Version 0.6 - Corrected 7962 and 7965 resolutions, as they were swapped. Special thanks to MF
-# Version 0.7 - Added DX650 support. Special thanks to MF
 
 
-use constant version     => "0.7 - 24.Aug.2015";
+use constant version     => "0.6 - 24.Aug.2015";
 use constant programName => "phone background push - pbp";
 use constant developer   => "Manuel Azevedo";
 
@@ -172,11 +171,7 @@ sub setBackground {
     if ($model==8945) {
        $realm=$deviceName="SEP".lc(substr($deviceName,3,12));
     } else {
-       if ($model=="DX650") {
-          $realm="";
-       } else {
-          $realm="user";
-       }
+       $realm="user";
     }
     debugMsg("Phone realm: '$realm'");
     
@@ -394,7 +389,6 @@ sub getPhoneInfo{
 	540   => {model =>'8961', res =>'640x480x24'},
 	537   => {model =>'9951', res =>'640x480x24'},
 	493   => {model =>'9971', res =>'640x480x24'},
-	647   => {model =>'DX650',res =>'1600x1280x24'},
     );
     
 
