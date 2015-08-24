@@ -35,9 +35,10 @@
 #	        Cleaned some spelling errors
 # Version 0.5 - Added support to push backgrounds to the 8945, that requires a different http realm
 #               Changed the way SSL self-signed certificates are handled by the app
+# Version 0.6 - Corrected 7962 and 7965 resolutions, as they were swapped.
 
 
-use constant version     => "0.5 - 03.Jul.2015";
+use constant version     => "0.6 - 24.Aug.2015";
 use constant programName => "phone background push - pbp";
 use constant developer   => "Manuel Azevedo";
 
@@ -371,9 +372,9 @@ sub getPhoneInfo{
 	369   => {model =>'7906', res =>'95x34x1'   },
 	307   => {model =>'7911', res =>'95x34x1'   },
 	434   => {model =>'7942', res =>'320x196x4' },
+	404   => {model =>'7962', res =>'320x196x4' },
 	435   => {model =>'7945', res =>'320x212x16'},
-	404   => {model =>'7962', res =>'320x212x16'},
-	436   => {model =>'7965', res =>'320x196x4' },
+	436   => {model =>'7965', res =>'320x212x16'},
 	30006 => {model =>'7970', res =>'320x212x12'},
 	119   => {model =>'7971', res =>'320x212x12'},
 	437   => {model =>'7975', res =>'320x216x16'},
